@@ -42,3 +42,40 @@ public:
 // You should also mention that this is essentially a stack simulation, 
 // and the string ans is working as the stack here. 
 // That shows understanding of the approach.
+
+//more optimized approach SC-O(1)
+//here j acts as a pointer and helps in overwriting the original string
+class Solution {
+public:
+    string removeDuplicates(string s) {
+        int j=0;
+        for(int i=0;i<s.length();i++){
+            if(j>0&&s[i]==s[j-1]){
+                j--;
+            }
+            else{
+                s[j]=s[i];
+                j++;
+            }
+        }
+        return s.substr(0,j);
+    }
+};
+// Why overwrite in the same string (s)?
+
+// Instead of using an extra stack, we just reuse the input string s as a stack.
+
+// We keep a pointer j → length of current valid result.
+
+// When pushing, write at s[j] and move j++.
+
+// When popping, just move j--.
+
+// At the end, valid string is s.substr(0, j).
+
+// Intuition in one line:
+
+// 👉 “Keep building a stack of characters. Push if different, pop if same.”
+
+// This works because duplicates must be adjacent. 
+//If they’re not adjacent, they will only become adjacent after some cancellations, and the process naturally handles that.
