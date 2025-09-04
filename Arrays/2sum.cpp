@@ -4,8 +4,6 @@
 
 // You can return the answer in any order.
 
- 
-
 // Example 1:
 
 // Input: nums = [2,7,11,15], target = 9
@@ -19,39 +17,41 @@
 
 // Input: nums = [3,3], target = 6
 // Output: [0,1]
-//this a BRUTE FORCE high TC 
-vector<int>ans;
-for(int i=0;i<nums.size();i++){
-for(int j=i+1;j<nums.size();j++){
-if(nums[i]+nums[j]==target){
-ans.push_back(i);
-ans.push_back(j);
-return ans;
-}
-
-
-}
-
-
-
-}
-return ans;
+// this a BRUTE FORCE high TC
+vector<int> ans;
+for (int i = 0; i < nums.size(); i++)
+{
+    for (int j = i + 1; j < nums.size(); j++)
+    {
+        if (nums[i] + nums[j] == target)
+        {
+            ans.push_back(i);
+            ans.push_back(j);
+            return ans;
+        }
     }
-};
+}
+return ans;
+}
+}
+;
 
-//this is optimised 
+// this is optimised
 
-
-class Solution {
+class Solution
+{
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int,int>maps;
-        for(int i=0;i<nums.size();i++){
-            int need=target-nums[i];
-            if(maps.find(need)!=maps.end()){
-return {maps[need],i};
+    vector<int> twoSum(vector<int> &nums, int target)
+    {
+        unordered_map<int, int> maps;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            int need = target - nums[i];
+            if (maps.find(need) != maps.end())
+            {
+                return {maps[need], i};
             }
-            maps[nums[i]]=i;
+            maps[nums[i]] = i;
         }
         return {};
     }
