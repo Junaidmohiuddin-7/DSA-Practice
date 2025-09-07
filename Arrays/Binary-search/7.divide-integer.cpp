@@ -7,8 +7,6 @@
 
 // Note: Assume we are dealing with an environment that could only store integers within the 32-bit signed integer range: [−231, 231 − 1]. For this problem, if the quotient is strictly greater than 231 - 1, then return 231 - 1, and if the quotient is strictly less than -231, then return -231.
 
- 
-
 // Example 1:
 
 // Input: dividend = 10, divisor = 3
@@ -19,43 +17,107 @@
 // Input: dividend = 7, divisor = -3
 // Output: -2
 // Explanation: 7/-3 = -2.33333.. which is truncated to -2.
+//BRUTE FORCE
+int divide_naive(int dividend, int divisor) {
+    // handle sign and use long long to be safe
+    long long a = dividend; if (a < 0) a = -a;
+    long long b = divisor; if (b < 0) b = -b;
+    long long ans = 0;
+    while (a >= b) {
+        a -= b;    // subtract one divisor each time
+        ans += 1;
+    }
+    // apply sign (XOR)
+    if ((dividend < 0) ^ (divisor < 0)) ans = -ans;
+    return (int)ans;
+}
 
-
-
-
-class Solution {
+//THIS IS A SEPERATE ANSWER OF BINARY SEARCH
+class Solution
+{
 public:
-    int divide(int dividend, int divisor) {
-       
-        int anspos=true;
-        if(dividend<0&&divisor>0){
-            anspos=false;
+    int divide(int dividend, int divisor)
+    {
+
+        int anspos = true;
+        if (dividend < 0 && divisor > 0)
+        {
+            anspos = false;
         }
-        if(dividend>0&&divisor<0){
-            anspos=false;
+        if (dividend > 0 && divisor < 0)
+        {
+            anspos = false;
         }
 
         long long int dividendx = abs((long long)dividend);
         long long int divisorx = abs((long long)divisor);
-        long long  int ans=0;
-        long long int s=0;
-        long long int e=dividendx;
-        while(s<=e){
-long long int mid=s+(e-s)/2;
-if(divisorx*mid<=dividendx){
-    ans=mid;
-    s=mid+1;
-}
-else{
-    e=mid-1;
-}
-
-
+        long long int ans = 0;
+        long long int s = 0;
+        long long int e = dividendx;
+        while (s <= e)
+        {
+            long long int mid = s + (e - s) / 2;
+            if (divisorx * mid <= dividendx)
+            {
+                ans = mid;
+                s = mid + 1;
+            }
+            else
+            {
+                e = mid - 1;
+            }
         }
-        if(anspos==false){
-return -ans;
+        if (anspos == false)
+        {
+            return -ans;
         }
-return ans;
-        
+        return ans;
     }
 };
+//THIS IS A OPTIMISED SOLUTION 
+class Solution
+{
+public:
+    int divide(int dividend, int divisor)
+    {
+
+        long long a = dividend;
+        if (a < 0)
+        {
+            a = -a;
+        }
+        long long b = divisor;
+        if (b < 0)
+        {
+            b = -b;
+        }
+        if (dividend == INT_MIN && divisor == -1)
+        {
+            return INT_MAX;
+        }
+        long result = 0;
+        while (a >= b)
+        {
+            long temp = b;
+            long multiple = 1;
+            while (temp + temp <= a)
+            {
+                temp = temp + temp;         // temp=temp<<1;
+                                        // multiple=multiple<<1;
+                multiple = multiple + multiple;
+            }
+            a = a - temp;
+            result = result + multiple;
+        }
+        if ((dividend < 0) ^ (divisor < 0))
+        {
+
+            result = -result;
+        }
+
+        return result;
+    }
+};
+Time Complexity: O(log n) (fast, because of doubling jumps)
+
+Space Complexity: O(1) (only a few variables)
